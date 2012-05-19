@@ -31,7 +31,9 @@ function insert_context(context_file_data, add_context_link){
         if(line_number < hunk_info['to_file_start_line'] && line_number > hunk_info['to_file_start_line'] - 5){
             // would be better to do this with ejs... or some templating code
             var linenumbers = '<td class="line_numbers"></td><td class="line_numbers">' + line_number + '</td>';
-            var line = $('<tr> ' + linenumbers + '<td>' + $(this).html() + '</td></tr>');
+            // we need an extra space after td to account for the +/-
+            //  which are present in the commit diff, but not in the blob output
+            var line = $('<tr> ' + linenumbers + '<td><span>&nbsp;</span>' + $(this).html() + '</td></tr>');
             line.insertBefore(first_data_table_row);
         }
 
