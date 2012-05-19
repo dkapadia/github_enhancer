@@ -40,7 +40,7 @@ function insert_context(context_file_data, add_context_link){
         var next_row = current_row.next('tr');
         if(line_number === '...'){
             var next_line_number = parseInt(_get_line_number_from_diff_row(next_row));
-            if((next_line_number - prev_line_number) > 5){
+            if((next_line_number - prev_line_number) > 10){
                 for(i=1; i<6; i++){
                     var line = _get_line_html(prev_line_number+i, lines.eq(prev_line_number + i - 1));
                     line.insertBefore(current_row);
@@ -51,6 +51,13 @@ function insert_context(context_file_data, add_context_link){
                     var line = _get_line_html(next_line_number-i, lines.eq(next_line_number - i - 1));
                     line.insertAfter(current_row);
                 }
+            }
+            else{
+                for(i=prev_line_number+1; i<next_line_number; i++){
+                    var line = _get_line_html(i, lines.eq(i - 1));
+                    line.insertBefore(current_row);
+                }
+                current_row.hide();
             }
         }
         else{
