@@ -1,11 +1,12 @@
 function get_context(event){
         var add_context_link = $(event.target);
-        var view_file_link = add_context_link.siblings('a').first(); 
+        var parent_file = add_context_link.closest('.file');
+
+        var view_file_link = parent_file.find('a').first(); 
         var view_file_url = view_file_link.attr('href');
 
         $.get(view_file_url, function(data){
             insert_context(data, add_context_link);
-        
         });
         event.preventDefault();
 }
@@ -29,13 +30,18 @@ function insert_context(context_file_data, add_context_link){
     })
 }
 
+function find_hunks(){
+    // this seems like something happening because of css minification? maybe I can't trust the class name?
+    var hunks= $('.gc');
+    return hunks;
+}
+
 $(document).ready(function(){
-    var files = $('.file')
+    var hunks = find_hunks();
     
-    files.each( function(index) {
-        var view_file_link = $(this).find(".actions a");
+    hunks.each( function(index) {
         var add_context_link = $('<a href="#">Dhruv is the best</a>');
-        view_file_link.before(add_context_link);
+        $(this).append(add_context_link);
         add_context_link.click(get_context);
     });
 });
