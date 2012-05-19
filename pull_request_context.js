@@ -23,7 +23,7 @@ function insert_context(context_file_data, add_context_link){
 
     lines.each(function(index){
         // would be better to do this with ejs... or some templating code
-        var linenumbers = '<td>' + index + '</td><td>' + index + '</td>';
+        var linenumbers = '<td class="line_numbers"></td><td class="line_numbers">' + index + '</td>';
         var line = $('<tr> ' + linenumbers + '<td>' + $(this).html() + '</td></tr>');
         line.insertBefore(first_data_table_row);
 
