@@ -21,22 +21,28 @@ function insert_context(context_file_data, add_context_link){
 
 
     // Find where we want to insert the lines of code
-    var parent_file = add_context_link.closest('.file');
-    var data_table_body = parent_file.find('.data table tbody');
-    var first_data_table_row = add_context_link.closest('tr')
+    var first_hunk_row = add_context_link.closest('tr');
+    var next_hunk_row = first_hunk_row.nextAll('tr.hunk-row').first();
+    // TODO - this next hunk may not exist
 
     lines.each(function(index){
         var line_number = index + 1; // lines are 1 indexed
+            
+        // would be better to do this with ejs... or some templating code
+        var linenumbers = '<td class="line_numbers"></td><td class="line_numbers">' + line_number + '</td>';
+        // we need an extra space after td to account for the +/-
+        //  which are present in the commit diff, but not in the blob output
+        var line = $('<tr> ' + linenumbers + '<td><span>&nbsp;</span>' + $(this).html() + '</td></tr>');
         
         if(line_number < hunk_info['to_file_start_line'] && line_number > hunk_info['to_file_start_line'] - 5){
-            // would be better to do this with ejs... or some templating code
-            var linenumbers = '<td class="line_numbers"></td><td class="line_numbers">' + line_number + '</td>';
-            // we need an extra space after td to account for the +/-
-            //  which are present in the commit diff, but not in the blob output
-            var line = $('<tr> ' + linenumbers + '<td><span>&nbsp;</span>' + $(this).html() + '</td></tr>');
-            line.insertBefore(first_data_table_row);
+            line.insertBefore(first_hunk_row);
         }
-
+        
+        var last_hunk_line = hunk_info['to_file_start_line'] + hunk_info['to_file_hunk_length'];
+        if(line_number > last_hunk_line && line_number < last_hunk_line + 5){
+            line.insertBefore(next_hunk_row);
+        }
+        
     })
 }
 
@@ -53,8 +59,8 @@ function get_hunk_info(add_context_link){
 
     var match = hunk_regex.exec(hunk_info_text);
         
-    hunk_info['to_file_start_line'] = match[3];
-    hunk_info['to_file_hunk_length'] = match[4];
+    hunk_info['to_file_start_line'] = parseInt(match[3]);
+    hunk_info['to_file_hunk_length'] = parseInt(match[4]);
     return hunk_info;
 }
 
@@ -65,6 +71,8 @@ $(document).ready(function(){
         var add_context_link = $('<a href="#">Dhruv is the best</a>');
         $(this).append(add_context_link);
         add_context_link.click(get_context);
+        // Add a class to the row that contains this hunk for easy searching
+        $(this).closest('tr').addClass('hunk-row');
     });
 });
 
