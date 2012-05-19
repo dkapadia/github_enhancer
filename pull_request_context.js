@@ -1,6 +1,5 @@
 function get_context(event){
         var add_context_link = $(event.target);
-        //var parent_file = add_context_link.closest('.file');
 
         var view_file_link = add_context_link.closest('li').next('li').find('a')
         var view_file_url = view_file_link.attr('href');
@@ -16,14 +15,6 @@ function insert_context(context_file_data, add_context_link){
     context_file_data = $(context_file_data);
     var lines = context_file_data.find('.line')
 
-    // Find which lines we want to add
-    //var hunk_info = get_hunk_info(add_context_link);
-
-    // Find where we want to insert the lines of code
-    //var first_hunk_row = add_context_link.closest('tr').next();
-    //var next_hunk_row = first_hunk_row.nextAll('tr.hunk-row').first();
-    // TODO - this next hunk may not exist
-    //
     // Go through each of the lines in the current table
     var parent_file = add_context_link.closest('.file');
     var current_rows = parent_file.find('.data tr');
@@ -76,51 +67,6 @@ function insert_context(context_file_data, add_context_link){
 
     $('tr.context_row').effect('highlight', {}, 2000)
 }
-
-    //alert(current_line_numbers);
-    /*
-            hunk_info_row = true
-            if(!next_line_number){
-                return;
-            }
-            else{
-                var lines_remaining = next_line_number - line_number;
-                for(i=1; i<lines_remaining; i++){
-                    var line = _get_line_html(line_number+i, lines.eq(line_number + i));
-                    line.insertBefore(current_row);
-                }
-                $(this).hide();
-            }
-
-        }
-        prev_line_number = line_number;
-    });
-    */
-
-    /*
-
-    lines.each(function(index){
-        var line_number = index + 1; // lines are 1 indexed
-
-        var line = _get_line_html(line_number, this)
-        if(line_number < hunk_info['to_file_start_line'] && line_number > hunk_info['to_file_start_line'] - 5){
-            line.insertBefore(first_hunk_row);
-        }
-
-        var last_hunk_line = hunk_info['to_file_start_line'] + hunk_info['to_file_hunk_length'];
-        if(line_number > last_hunk_line && line_number < last_hunk_line + 5){
-            line.insertBefore(next_hunk_row);
-        }
-        
-    })
-    */
-
-function find_hunks(){
-    // this seems like something happening because of css minification? maybe I can't trust the class name?
-    var hunks= $('.gc');
-    return hunks;
-}
-
 function get_hunk_info(add_context_link){
     var hunk_info_text = add_context_link.siblings('pre').text();
     var hunk_info = {};
@@ -147,7 +93,6 @@ function _get_line_number_from_diff_row(row){
 }
 
 $(document).ready(function(){
-    //var hunks = find_hunks();
     var files = $('.file');
 
     
@@ -156,8 +101,6 @@ $(document).ready(function(){
         var view_file_link = $(this).find('.meta .actions a'); 
         $(add_context_link).insertBefore(view_file_link.closest('li'));
         add_context_link.click(get_context);
-        // Add a class to the row that contains this hunk for easy searching
-        //$(this).closest('tr').addClass('hunk-row');
     });
 });
 
