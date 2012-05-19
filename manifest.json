@@ -1,0 +1,19 @@
+{
+  "name": "Github Enhancer",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Various things to make github better",
+  "content_scripts" : [ 
+        { "matches": ["https://github.com/*",
+                      "https://www.github.com/*"],
+          "js": ["pull_request_context.js"]
+        }
+      
+  ],
+  "permissions": [
+            "http://github.com/"
+          , "https://github.com/"
+          , "http://www.github.com/"
+          , "https://www.github.com/"
+  ]
+}
