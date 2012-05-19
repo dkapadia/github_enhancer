@@ -73,6 +73,8 @@ function insert_context(context_file_data, add_context_link){
             prev_line_number = parseInt(line_number);
         }
     });
+
+    $('tr.context_row').effect('highlight', {}, 2000)
 }
 
     //alert(current_line_numbers);
@@ -136,7 +138,7 @@ function _get_line_html(line_number, line_content){
     var linenumbers = '<td class="line_numbers"></td><td class="line_numbers">' + line_number + '</td>';
     // we need an extra space after td to account for the +/-
     //  which are present in the commit diff, but not in the blob output
-    var line = $('<tr> ' + linenumbers + '<td><span>&nbsp;</span>' + $(line_content).html() + '</td></tr>');
+    var line = $('<tr class="context_row"> ' + linenumbers + '<td><span>&nbsp;</span>' + $(line_content).html() + '</td></tr>');
     return line;
 }
 

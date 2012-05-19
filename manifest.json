@@ -6,7 +6,7 @@
   "content_scripts" : [ 
         { "matches": ["https://github.com/*",
                       "https://www.github.com/*"],
-          "js": ["jquery-1.7.2.min.js", "pull_request_context.js"]
+          "js": ["jquery-1.7.2.min.js", "jquery-ui-1.8.20.custom.min.js","pull_request_context.js"]
         }
       
   ],
